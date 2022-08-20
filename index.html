@@ -15,6 +15,10 @@
     <title>muxic player</title>
   </head>
   <body>
+    <audio
+      id="audio"
+      src="https://dls.music-fa.com/tagdl/downloads/Mohsen%20Chavoshi%20-%2020%20Hezar%20Arezoo%20(320).mp3"
+    ></audio>
     <header class="main-header container">
       <nav class="main-header-nav d-flex align-items-center">
         <h1>Logo Here !</h1>
@@ -42,7 +46,6 @@
     </header>
 
     <main style="clear: both">
-
       <section class="hero-section">
         <div class="hero-desc px-1">
           <h1 class="fs-42 fw-500">
@@ -60,9 +63,7 @@
           <span> Most Popular and good </span>
         </h2>
         <div class="container">
-          <div class="d-flex musics-container space-b">
-            
-          </div>
+          <div class="d-flex musics-container space-b"></div>
         </div>
       </section>
       <section class="current-music-section space-a">
@@ -74,18 +75,21 @@
             style="background-image: url(images/mohsen.jpg)"
             class="current-music-cover"
           >
-            <svg
-              width="92"
-              height="96"
-              viewBox="0 0 92 96"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M86.6835 55.3876L14.0932 94.1882C7.93274 97.4776 0.0268555 93.4946 0.0268555 86.8632V9.26196C0.0268555 2.64105 7.92133 -1.35251 14.0932 1.94743L86.6835 40.748C88.0849 41.485 89.2498 42.5503 90.06 43.8358C90.8702 45.1213 91.297 46.5813 91.297 48.0678C91.297 49.5543 90.8702 51.0144 90.06 52.2999C89.2498 53.5854 88.0849 54.6506 86.6835 55.3876Z"
-                fill="#F2F2F2"
-              />
-            </svg>
+            <button class="btn cover-play-button">
+              <svg
+                id="play-icon"
+                width="92"
+                height="96"
+                viewBox="0 0 92 96"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M86.6835 55.3876L14.0932 94.1882C7.93274 97.4776 0.0268555 93.4946 0.0268555 86.8632V9.26196C0.0268555 2.64105 7.92133 -1.35251 14.0932 1.94743L86.6835 40.748C88.0849 41.485 89.2498 42.5503 90.06 43.8358C90.8702 45.1213 91.297 46.5813 91.297 48.0678C91.297 49.5543 90.8702 51.0144 90.06 52.2999C89.2498 53.5854 88.0849 54.6506 86.6835 55.3876Z"
+                  fill="#F2F2F2"
+                />
+              </svg>
+            </button>
           </div>
           <div class="current-music-details">
             <div class="music-name">
@@ -98,8 +102,8 @@
             </div>
             <div class="music-control-wrapper">
               <div class="music-time py-1">
-                <span class="current-time">01:05</span>
-                <span class="full-time">3:05</span>
+                <span class="current-time">00 : 00</span>
+                <span class="full-time">00 : 00</span>
               </div>
               <div class="music-progress">
                 <div class="music-progress-bar"></div>

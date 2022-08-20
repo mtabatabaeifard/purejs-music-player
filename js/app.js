@@ -1,6 +1,13 @@
 import musics from "../data/musics.js";
 const musicsContainer = document.querySelector(".musics-container");
 const currentMusicCover = document.querySelector(".current-music-cover");
+const currentMusicSinger = document.querySelector(".current-music-singer");
+const currentMusicTitle = document.querySelector(".current-music-title");
+const audio = document.querySelector("#audio");
+const playIcon = document.querySelector("#play-icon");
+const coverPlayButton = document.querySelector(".cover-play-button");
+const currentTime = document.querySelector(".current-time");
+const fullTime = document.querySelector(".full-time");
 
 function setCurrentMusic(params) {
   [...musicsContainer.children].forEach((songElement) => {
@@ -10,6 +17,50 @@ function setCurrentMusic(params) {
         (item) => item.id === parseInt(songElement.dataset.id)
       )[0];
       console.log(currentMusic);
+      currentMusicCover.style.backgroundImage = `url(${currentMusic.cover})`;
+      currentMusicSinger.innerHTML = currentMusic.artist;
+      currentMusicTitle.innerHTML = currentMusic.name;
+      audio.src = currentMusic.audio;
+      audio.play().then(() => {
+        setInterval(() => {
+          const min = ("0" + Math.round(audio.currentTime / 60)).slice(-2);
+          const sec = ("0" + Math.round(audio.currentTime % 60)).slice(-2);
+          currentTime.innerHTML = `${min} : ${sec}`;
+        }, 1000);
+        const min = ("0" + Math.round(audio.duration / 60)).slice(-2);
+        const sec = ("0" + Math.round(audio.duration % 60)).slice(-2);
+        fullTime.innerHTML = `${min} : ${sec}`;
+        const span = document.createElement("span");
+        span.innerHTML = "pause";
+        span.style.display = "inline";
+        span.onclick = function () {
+          if (span.style.display !== "inline") {
+            audio.play();
+            span.innerHTML = `<svg
+            id="play-icon"
+            width="92"
+            height="96"
+            viewBox="0 0 92 96"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M86.6835 55.3876L14.0932 94.1882C7.93274 97.4776 0.0268555 93.4946 0.0268555 86.8632V9.26196C0.0268555 2.64105 7.92133 -1.35251 14.0932 1.94743L86.6835 40.748C88.0849 41.485 89.2498 42.5503 90.06 43.8358C90.8702 45.1213 91.297 46.5813 91.297 48.0678C91.297 49.5543 90.8702 51.0144 90.06 52.2999C89.2498 53.5854 88.0849 54.6506 86.6835 55.3876Z"
+              fill="#F2F2F2"
+            />
+          </svg>`;
+            span.style.display = "inline";
+          } else {
+            audio.pause();
+            span.style.display = "inline-block";
+            span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+            <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+          </svg>`;
+          }
+        };
+        coverPlayButton.innerHTML = "";
+        coverPlayButton.appendChild(span);
+      });
     });
   });
 }
