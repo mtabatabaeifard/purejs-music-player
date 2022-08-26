@@ -14,7 +14,15 @@ const currentTime = document.querySelector(".current-time");
 const fullTime = document.querySelector(".full-time");
 const musicTimeRange = document.getElementById("music-time-range");
 const musicProgressBar = document.querySelector(".music-progress-bar");
+const shuffleMusic = document.getElementById("shuffle-music");
+const repeatMusic = document.getElementById("repeat-music");
+const musicVolumeInput = document.getElementById("volume");
 
+let indexOfCurrentMusic = 0;
+let repeatMusicState = false;
+const savedVolume = localStorage.getItem("currentVolume");
+// load current volume from local storage
+musicVolumeInput.setAttribute('value' , savedVolume);
 function updateCurrentMusicUI(currentMusic) {
   currentMusicCover.style.backgroundImage = `url(${currentMusic.cover})`;
   currentMusicSinger.innerHTML = currentMusic.artist;
@@ -29,7 +37,6 @@ function updateCurrentMusicUI(currentMusic) {
       const musicProgressBarWidth = (audio.currentTime / audio.duration) * 100;
       musicProgressBar.style.width = musicProgressBarWidth + "%";
     }, 1000);
-    console.log(musicTimeRange.max, audio.duration);
     musicTimeRange.max = audio.duration;
     const min = ("0" + Math.round(audio.duration / 60)).slice(-2);
     const sec = ("0" + Math.round(audio.duration % 60)).slice(-2);
@@ -42,7 +49,6 @@ function updateCurrentMusicUI(currentMusic) {
     span.style.display = "inline";
     span.onclick = function () {
       if (span.style.display === "inline") {
-        console.log("a");
         audio.pause();
         span.style.display = "inline-block";
         span.innerHTML = `<svg
@@ -59,7 +65,6 @@ function updateCurrentMusicUI(currentMusic) {
           />
         </svg>`;
       } else {
-        console.log("b");
         audio.play();
         span.style.display = "inline";
         span.innerHTML = `<svg width="84" height="94" viewBox="0 0 84 94" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,17 +77,49 @@ function updateCurrentMusicUI(currentMusic) {
     coverPlayButton.appendChild(span);
   });
 }
+shuffleMusic.onclick = function () {
+  const randomMusic = Math.floor(Math.random() * musics().length);
+  updateCurrentMusicUI(musics()[randomMusic]);
+};
+repeatMusic.onclick = function () {
+  repeatMusicState = !repeatMusicState;
+  console.log(repeatMusicState);
+  if (repeatMusicState) {
+    repeatMusic.style.backgroundColor = 'green';
+  }
+  else{
+    repeatMusic.style.backgroundColor = 'transparent';
+  }
+};
+musicVolumeInput.onchange = function () {
+  audio.volume = (musicVolumeInput.value / 10);
+  localStorage.setItem('currentVolume',musicVolumeInput.value)
+  // save user's current volume to localStorage
+}
+const handleNextMusic = () => {
+  if (repeatMusicState) {
+    return updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  }
+  if (indexOfCurrentMusic === musics().length - 1) {
+    indexOfCurrentMusic = 0;
+    updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  } else {
+    indexOfCurrentMusic++;
+    updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  }
+};
+audio.onended = handleNextMusic;
 
-let indexOfCurrentMusic = 0;
-
-nextButton.addEventListener("click", (e) => {
-  indexOfCurrentMusic++;
-  updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
-});
+nextButton.addEventListener("click", handleNextMusic);
 
 prevButton.addEventListener("click", (e) => {
-  indexOfCurrentMusic--;
-  updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  if (indexOfCurrentMusic === 0) {
+    indexOfCurrentMusic = musics().length - 1;
+    updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  } else {
+    indexOfCurrentMusic--;
+    updateCurrentMusicUI(musics()[indexOfCurrentMusic]);
+  }
 });
 
 function setCurrentMusic() {
