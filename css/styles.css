@@ -156,3 +156,6 @@ input[type="range"]::-webkit-slider-thumb {
 .section-img {
   width: 40%;
 }
+.current-volume{
+  transform: rotate(270deg);
+}

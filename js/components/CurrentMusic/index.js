@@ -85,10 +85,10 @@ repeatMusic.onclick = function () {
   repeatMusicState = !repeatMusicState;
   console.log(repeatMusicState);
   if (repeatMusicState) {
-    repeatMusic.style.backgroundColor = 'green';
+    repeatMusic.style.background = 'green';
   }
   else{
-    repeatMusic.style.backgroundColor = 'transparent';
+    repeatMusic.style.background = 'linear-gradient(258.57deg, #ff5500 2.36%, #fb8246 100%)';
   }
 };
 musicVolumeInput.onchange = function () {
